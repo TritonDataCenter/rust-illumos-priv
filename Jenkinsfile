@@ -19,6 +19,11 @@ pipeline {
                 sh('make check')
             }
         }
+        stage('test') {
+            steps{
+                sh('make test')
+            }
+        }
     }
 
     post {
