@@ -7,7 +7,7 @@
 use std::os::raw::{c_char, c_int};
 
 #[repr(C)]
-/// illumos opaque type priv_set_t
+/// illumos opaque type `priv_set_t`
 pub struct OpaquePrivSet {
     _private: [u8; 0],
 }

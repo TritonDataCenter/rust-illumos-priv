@@ -4,7 +4,7 @@
 
 // Copyright 2019 Joyent, Inc.
 
-//! The definitions below are sourced from an illumos system in "/usr/include/sys/priv_names.h"
+//! The definitions below are sourced from an illumos system in `/usr/include/sys/priv_names.h`
 
 use std::ffi::CStr;
 use std::os::raw::c_char;
