@@ -2,7 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-// Copyright 2019 Joyent, Inc.
+// Copyright 2020 Joyent, Inc.
 
 #![deny(warnings)]
 #![deny(missing_docs)]
@@ -18,19 +18,17 @@
 //! ```
 //! use illumos_priv::{PrivOp, PrivPtype, PrivSet, Privilege};
 //!
-//! fn main() {
+//! // Get a new basic PrivSet.
+//! let set = PrivSet::new_basic().unwrap();
 //!
-//!     // Get a new basic PrivSet.
-//!     let set = PrivSet::new_basic().unwrap();
+//! // Remove the ability to fork(2) from the set.
+//! let _ = set
+//!     .delset(Privilege::ProcFork)
+//!     .expect("failed to delete from set");
 //!
-//!     // Remove the ability to fork(2) from the set.
-//!     let _ = set
-//!         .delset(Privilege::ProcFork)
-//!         .expect("failed to delete from set");
+//! // Replace the effective privilege set with the new one
+//! illumos_priv::setppriv(PrivOp::Set, PrivPtype::Effective, &set).unwrap();
 //!
-//!     // Replace the effective privilege set with the new one
-//!     illumos_priv::setppriv(PrivOp::Set, PrivPtype::Effective, &set).unwrap();
-//! }
 //! ```
 
 use std::ffi::CStr;
