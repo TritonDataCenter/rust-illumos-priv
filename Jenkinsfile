@@ -5,7 +5,7 @@ pipeline {
     agent {
         // Currently set to the earliest Rust-included build/origin image
         // in use by release repos.
-        label joyCommonLabels(image_ver: '19.1.0')
+        label joyCommonLabels(image_ver: '19.4.0')
     }
 
     options {
