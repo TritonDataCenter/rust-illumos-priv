@@ -19,7 +19,7 @@
 //! use illumos_priv::{PrivOp, PrivPtype, PrivSet, Privilege};
 //!
 //! // Get a new basic PrivSet.
-//! let set = PrivSet::new_basic().unwrap();
+//! let mut set = PrivSet::new_basic().unwrap();
 //!
 //! // Remove the ability to fork(2) from the set.
 //! let _ = set
@@ -109,26 +109,26 @@ impl PrivSet {
     }
 
     /// Adds the "basic" set to the `PrivSet`.
-    pub fn basic(&self) {
+    pub fn basic(&mut self) {
         unsafe {
             ffi::priv_basicset(self.inner);
         }
     }
 
     /// Empties the `PrivSet` so that it contains no "privileges"
-    pub fn empty(&self) {
+    pub fn empty(&mut self) {
         unsafe {
             ffi::priv_emptyset(self.inner);
         }
     }
 
     /// Adds the named privilege to the `PrivSet`
-    pub fn addset(&self, p: Privilege) -> io::Result<()> {
+    pub fn addset(&mut self, p: Privilege) -> io::Result<()> {
         unsafe { ret_or_err(ffi::priv_addset(self.inner, p.as_ptr())) }
     }
 
     /// Removes the named privilege from the `PrivSet`
-    pub fn delset(&self, p: Privilege) -> io::Result<()> {
+    pub fn delset(&mut self, p: Privilege) -> io::Result<()> {
         unsafe { ret_or_err(ffi::priv_delset(self.inner, p.as_ptr())) }
     }
 
@@ -199,10 +199,7 @@ fn ret_or_err(ret: i32) -> io::Result<()> {
 }
 
 fn true_or_false(ret: i32) -> bool {
-    match ret {
-        1 => true,
-        _ => false,
-    }
+    matches!(ret, 1)
 }
 
 // ============ Tests ============
@@ -220,7 +217,7 @@ mod tests {
 
     #[test]
     fn empty_test() {
-        let set = PrivSet::new_basic().unwrap();
+        let mut set = PrivSet::new_basic().unwrap();
         assert_eq!(false, set.is_empty(), "set is not empty");
         set.empty();
         assert_eq!(true, set.is_empty(), "set is empty");
@@ -229,7 +226,7 @@ mod tests {
     #[test]
     fn is_equal_test() {
         let src = PrivSet::new_basic().unwrap();
-        let dst = PrivSet::new_empty().unwrap();
+        let mut dst = PrivSet::new_empty().unwrap();
         assert_eq!(false, src.is_equal(&dst), "PrivSets are not equal");
         dst.basic();
         assert_eq!(true, src.is_equal(&dst), "PrivSets are equal");
@@ -249,7 +246,7 @@ mod tests {
 
     #[test]
     fn add_priv_test() {
-        let set = PrivSet::new_empty().unwrap();
+        let mut set = PrivSet::new_empty().unwrap();
         assert_eq!(
             false,
             set.is_member(Privilege::ProcFork),
@@ -267,7 +264,7 @@ mod tests {
 
     #[test]
     fn del_priv_test() {
-        let set = PrivSet::new_basic().unwrap();
+        let mut set = PrivSet::new_basic().unwrap();
         assert_eq!(
             true,
             set.is_member(Privilege::ProcFork),
@@ -286,7 +283,7 @@ mod tests {
     #[test]
     fn getppriv_test() {
         let orig = getppriv(PrivPtype::Effective).unwrap();
-        let src = PrivSet::new_basic().unwrap();
+        let mut src = PrivSet::new_basic().unwrap();
         let _ = src
             .delset(Privilege::ProcFork)
             .expect("failed to delete from set");
@@ -301,7 +298,7 @@ mod tests {
     #[test]
     fn drop_fork_test() {
         let orig = getppriv(PrivPtype::Effective).unwrap();
-        let set = PrivSet::new_basic().unwrap();
+        let mut set = PrivSet::new_basic().unwrap();
         let _ = set
             .delset(Privilege::ProcFork)
             .expect("failed to delete from set");
