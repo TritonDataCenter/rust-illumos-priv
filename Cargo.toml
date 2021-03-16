@@ -1,6 +1,6 @@
 [package]
 name = "illumos-priv"
-version = "0.1.0"
+version = "0.2.0"
 description = "Crate providing an interface to illumos's PRIVILEGES(5)"
 readme = "README.md"
 authors = ["Mike Zeller <mike@mikezeller.net>"]
