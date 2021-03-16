@@ -12,7 +12,6 @@ pub struct OpaquePrivSet {
     _private: [u8; 0],
 }
 
-#[no_mangle]
 extern "C" {
     /// allocates sufficient memory to contain a privilege set. The value of the returned privilege
     /// set is indeterminate. The function returns NULL and sets errno when it fails to allocate

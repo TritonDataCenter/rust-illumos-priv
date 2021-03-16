@@ -2,7 +2,7 @@ use illumos_priv::{PrivOp, PrivPtype, PrivSet, Privilege};
 use std::process::Command;
 
 fn main() {
-    let pset = PrivSet::new_basic().unwrap();
+    let mut pset = PrivSet::new_basic().unwrap();
 
     pset.delset(Privilege::ProcExec).unwrap();
     pset.delset(Privilege::ProcFork).unwrap();

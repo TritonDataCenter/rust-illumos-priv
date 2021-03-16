@@ -1,7 +1,7 @@
 use illumos_priv::{PrivSet, Privilege};
 
 fn main() {
-    let pset = PrivSet::new_basic().unwrap();
+    let mut pset = PrivSet::new_basic().unwrap();
 
     println!(
         "{:?} is in the PrivSet: {}",
