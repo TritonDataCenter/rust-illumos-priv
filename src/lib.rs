@@ -2,7 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-// Copyright 2020 Joyent, Inc.
+// Copyright 2021 Joyent, Inc.
 
 #![deny(warnings)]
 #![deny(missing_docs)]
@@ -199,7 +199,7 @@ fn ret_or_err(ret: i32) -> io::Result<()> {
 }
 
 fn true_or_false(ret: i32) -> bool {
-    matches!(ret, 1)
+    match ret { 1 => true, _ => false }
 }
 
 // ============ Tests ============
