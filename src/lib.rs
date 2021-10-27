@@ -2,7 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-// Copyright 2020 Joyent, Inc.
+// Copyright 2021 Joyent, Inc.
 
 #![deny(warnings)]
 #![deny(missing_docs)]
@@ -199,7 +199,21 @@ fn ret_or_err(ret: i32) -> io::Result<()> {
 }
 
 fn true_or_false(ret: i32) -> bool {
-    matches!(ret, 1)
+    /*
+     * Jenkins builds with rust 1.4.0, which doesn't support the matches!()
+     * macro, but we also don't want to throw clippy warnings on any consumers
+     * using a later rust.
+     * Once issue #7 is fixed, which will allow Jenkins to use a later version
+     * of rust, this can be switched back to matches!().
+     * We also need to allow unknown clippy lints for older versions of rust
+     * to pass make check.
+     */
+    #[allow(clippy::unknown_clippy_lints)]
+    #[allow(clippy::match_like_matches_macro)]
+    match ret {
+        1 => true,
+        _ => false,
+    }
 }
 
 // ============ Tests ============
