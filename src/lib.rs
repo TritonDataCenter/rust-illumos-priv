@@ -199,6 +199,14 @@ fn ret_or_err(ret: i32) -> io::Result<()> {
 }
 
 fn true_or_false(ret: i32) -> bool {
+    /*
+     * Jenkins builds with rust 1.4.0, which doesn't support the matches!()
+     * macro, but we also don't want to throw clippy warnings on any consumers
+     * using a later rust.
+     * Once issue #7 is fixed, which will allow Jenkins to use a later version
+     * of rust, this can be switched back to matches!().
+     */
+    #[allow(clippy::match_like_matches_macro)]
     match ret { 1 => true, _ => false }
 }
 
