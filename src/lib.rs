@@ -210,7 +210,10 @@ fn true_or_false(ret: i32) -> bool {
      */
     #[allow(clippy::unknown_clippy_lints)]
     #[allow(clippy::match_like_matches_macro)]
-    match ret { 1 => true, _ => false }
+    match ret {
+        1 => true,
+        _ => false,
+    }
 }
 
 // ============ Tests ============
