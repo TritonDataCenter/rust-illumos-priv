@@ -205,7 +205,10 @@ fn true_or_false(ret: i32) -> bool {
      * using a later rust.
      * Once issue #7 is fixed, which will allow Jenkins to use a later version
      * of rust, this can be switched back to matches!().
+     * We also need to allow unknown clippy lints for older versions of rust
+     * to pass make check.
      */
+    #[allow(clippy::unknown_clippy_lints)]
     #[allow(clippy::match_like_matches_macro)]
     match ret { 1 => true, _ => false }
 }
